@@ -1,0 +1,14 @@
+[Unit]
+Description=ChirpStack Database Initialization
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/chirpstack-postgresql-db.sh
+RemainAfterExit=true
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

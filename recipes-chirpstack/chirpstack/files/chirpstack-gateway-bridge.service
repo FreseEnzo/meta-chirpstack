@@ -1,0 +1,14 @@
+[Unit]
+Description=ChirpStack LoRaWAN Gateway Bridge
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=root
+Group=root
+ExecStart=/usr/bin/chirpstack-gateway-bridge --config /etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
