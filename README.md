@@ -187,9 +187,7 @@ If you encounter any issues or have suggestions for improvements, please [open a
 
 ## License
 
-**Meta-ChirpStack Yocto Layer** is currently under a **CLOSED** license. Please refer to the [LICENSE](LICENSE) file for more details.
-
-> **Note:** If you intend to make this layer open source, consider updating the `LICENSE` field in your recipes and including an appropriate open-source license file in your repository.
+**Meta-ChirpStack Yocto Layer** is currently under a **MIT** license. Please refer to the [LICENSE](LICENSE) file for more details.
 
 ## Support
 
