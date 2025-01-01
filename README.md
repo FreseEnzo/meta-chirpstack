@@ -9,11 +9,21 @@
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
+- [Integration](#integration)
+  - [Option 1: Add the `meta-chirpstack` Layer and Modify `chirpstack.toml`](#option-1-add-the-meta-chirpstack-layer-and-modify-chirpstacktoml)
+  - [Option 2: Use a Custom Meta-Layer to Overwrite `chirpstack.toml`](#option-2-use-a-custom-meta-layer-to-overwrite-chirpstacktoml)
+  - [Generating a Secret Key](#generating-a-secret-key)
 - [Configuration](#configuration)
+  - [Version Overrides](#version-overrides)
+  - [Source URIs and Checksums](#source-uris-and-checksums)
 - [Usage](#usage)
+  - [Starting Services](#starting-services)
+  - [PostgreSQL Initialization](#postgresql-initialization)
 - [Services](#services)
 - [Dependencies](#dependencies)
 - [Contributing](#contributing)
+  - [How to Contribute](#how-to-contribute)
+  - [Reporting Issues](#reporting-issues)
 - [License](#license)
 - [Support](#support)
 
@@ -58,6 +68,84 @@ Follow these steps to add the Meta-ChirpStack layer to your Yocto project:
 3. **Set Layer Priorities (Optional):**
 
    If necessary, adjust the layer priorities in your `bblayers.conf` to resolve any potential conflicts.
+
+## Integration
+
+To integrate ChirpStack into your project, you need to add a `secret = "<YOUR SECRET KEY>"` entry to the `chirpstack.toml` configuration file located at `recipes-chirpstack/chirpstack/files/chirpstack.toml`. You can achieve this in two ways:
+
+### Option 1: Add the `meta-chirpstack` Layer and Modify `chirpstack.toml`
+
+1. **Add the `meta-chirpstack` Layer:**
+   - Incorporate the `meta-chirpstack` layer into your project’s build environment (already covered in the [Installation](#installation) section).
+
+2. **Modify the `chirpstack.toml` File:**
+   - Open the `chirpstack.toml` file located at `recipes-chirpstack/chirpstack/files/chirpstack.toml`.
+   - Add or update the `secret` key as shown below:
+
+   ```toml
+   # Secret.
+   #
+   # This secret is used for generating login and API tokens. Ensure this
+   # is never exposed. Changing this secret will invalidate all login and API
+   # tokens. You can generate a random secret using the following command:
+   #   openssl rand -base64 32
+   secret = "<YOUR SECRET KEY>"
+   ```
+
+### Option 2: Use a Custom Meta-Layer to Overwrite `chirpstack.toml`
+
+1. **Create the Necessary Directory Structure:**
+   - Create the following directories and file in your custom meta-layer:
+
+     ```
+     your-meta-layer/
+     └── recipes-chirpstack/
+         └── chirpstack/
+             └── chirpstack_%.bb
+     ```
+
+2. **Configure the BitBake Recipe:**
+   - Open `chirpstack_%.bb` and add the following content:
+
+     ```bitbake
+     FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
+
+     do_install:append() {
+         install -m 0644 ${WORKDIR}/chirpstack.toml ${D}${sysconfdir}/chirpstack/chirpstack.toml
+     }
+
+     INSANE_SKIP:${PN} += "already-stripped"
+     ```
+
+3. **Add the Custom `chirpstack.toml` File:**
+   - Create the `files` directory:
+
+     ```
+     your-meta-layer/
+     └── recipes-chirpstack/
+         └── chirpstack/
+             └── files/
+                 └── chirpstack.toml
+     ```
+
+   - Copy your customized `chirpstack.toml` into the `files` directory and modify it as needed.
+
+   **Tip:** This approach will overwrite the default `chirpstack.toml` with your custom configuration.
+
+4. **Update `layer.conf`:**
+   - Modify your `layer.conf` file to include ChirpStack in the image:
+
+     ```bitbake
+     IMAGE_INSTALL:append = " chirpstack"
+     ```
+
+### Generating a Secret Key
+
+Regardless of the option you choose, ensure you generate a secure secret key. You can generate a random secret using the following command:
+
+```bash
+openssl rand -base64 32
+```
 
 ## Configuration
 
@@ -113,7 +201,7 @@ The Meta-ChirpStack layer sets up the following systemd services:
 - **ChirpStack Server:**
   - **Service File:** `chirpstack.service`
   - **Configuration File:** `chirpstack.toml`
-  
+
 - **ChirpStack Gateway Bridge:**
   - **Service File:** `chirpstack-gateway-bridge.service`
   - **Configuration File:** `chirpstack-gateway-bridge.toml`
@@ -127,7 +215,7 @@ These services are automatically enabled and started upon installation.
 
 ## Dependencies
 
-Ensure that the following dependencies are included in your Yocto build for proper functioning of ChirpStack components:
+Ensure that the following dependencies are included in your Yocto build for the proper functioning of ChirpStack components:
 
 - **Mosquitto:** MQTT broker
 - **Redis:** In-memory data structure store
@@ -187,7 +275,7 @@ If you encounter any issues or have suggestions for improvements, please [open a
 
 ## License
 
-**Meta-ChirpStack Yocto Layer** is currently under a **MIT** license. Please refer to the [LICENSE](LICENSE) file for more details.
+**Meta-ChirpStack Yocto Layer** is licensed under the **MIT** license. Please refer to the [LICENSE](LICENSE) file for more details.
 
 ## Support
 
