@@ -1,7 +1,5 @@
 # Meta-ChirpStack Yocto Layer
 
-![ChirpStack Logo](https://www.chirpstack.io/assets/images/logo.svg)
-
 ## Overview
 
 **Meta-ChirpStack** is a Yocto layer that seamlessly integrates the ChirpStack LoRaWAN Network Server and Gateway Bridge into your Yocto-based projects. This layer provides prebuilt binaries and configurations to simplify the deployment and management of ChirpStack components, enabling robust and scalable LoRaWAN networks.
