@@ -46,7 +46,7 @@ do_compile() {
 
 do_install() {
     # Create directories
-    install -d ${D}${bindir}
+    install -d ${D}${sbindir}
     install -d ${D}${sysconfdir}/chirpstack
     install -d ${D}${sysconfdir}/chirpstack-gateway-bridge
     install -d ${D}${systemd_unitdir}/system
@@ -55,7 +55,7 @@ do_install() {
     # 1) Install ChirpStack server
     #
     install -m 0755 ${S}/${BPN}-server-${CHIRPSTACK_VERSION}/chirpstack \
-        ${D}${bindir}/chirpstack
+        ${D}${sbindir}/chirpstack
 
     install -m 0644 ${WORKDIR}/chirpstack.toml \
         ${D}${sysconfdir}/chirpstack/chirpstack.toml
@@ -67,7 +67,7 @@ do_install() {
     # 2) Install ChirpStack Gateway Bridge
     #
     install -m 0755 ${S}/${BPN}-gateway-bridge-${CHIRPSTACK_GW_BRIDGE_VERSION}/chirpstack-gateway-bridge \
-        ${D}${bindir}/chirpstack-gateway-bridge
+        ${D}${sbindir}/chirpstack-gateway-bridge
 
     install -m 0644 ${WORKDIR}/chirpstack-gateway-bridge.toml \
         ${D}${sysconfdir}/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml
@@ -81,3 +81,15 @@ do_install() {
 }
 
 SYSTEMD_AUTO_ENABLE = "enable"
+
+# Define which files to include in the chirpstack package
+FILES_${PN} = "\
+    ${sbindir}/chirpstack \
+    ${sbindir}/chirpstack-gateway-bridge \
+    ${sysconfdir}/chirpstack/chirpstack.toml \
+    ${sysconfdir}/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml \
+    ${sysconfdir}/chirpstack/region_eu868.toml \
+    ${systemd_unitdir}/system/chirpstack.service \
+    ${systemd_unitdir}/system/chirpstack-gateway-bridge.service \
+    /etc/init.d/chirpstack \
+"

@@ -6,7 +6,7 @@ Wants=network-online.target
 [Service]
 User=root
 Group=root
-ExecStart=/usr/bin/chirpstack-gateway-bridge --config /etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml
+ExecStart=/usr/sbin/chirpstack-gateway-bridge --config /etc/chirpstack-gateway-bridge/chirpstack-gateway-bridge.toml
 Restart=always
 RestartSec=10
 
