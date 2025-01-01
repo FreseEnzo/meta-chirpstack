@@ -1,7 +1,7 @@
 SUMMARY = "ChirpStack PostgreSQL initialization"
 DESCRIPTION = "Sets up the ChirpStack role, database, and extensions in PostgreSQL."
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=cbdbe8160f15ff989f5fe121e8fcfaea"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 SRC_URI = "\
     file://chirpstack-postgresql-db.sh \
