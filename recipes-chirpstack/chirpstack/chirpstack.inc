@@ -1,8 +1,8 @@
 SUMMARY ?= "ChirpStack (Network Server + Gateway Bridge) - Prebuilt Binaries"
 DESCRIPTION ?= "Install and configure ChirpStack LoRaWAN Network Server and Gateway Bridge."
 HOMEPAGE = "https://www.chirpstack.io/"
-LICENSE = "CLOSED"
-
+LICENSE = "MIT"
+LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=cbdbe8160f15ff989f5fe121e8fcfaea"
 # If you want to override versions in .bb, define them there.
 # These can be set as default values here in .inc for convenience.
 CHIRPSTACK_VERSION ?= "4.9.0"
